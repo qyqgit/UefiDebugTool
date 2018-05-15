@@ -1,0 +1,70 @@
+[Defines]  
+  INF_VERSION             = 0x00010005  
+  BASE_NAME               = Debug 
+  FILE_GUID               = dc72d2c7-a48a-42fd-80b6-9d229d9943c8  
+  MODULE_TYPE             = UEFI_APPLICATION  
+  VERSION_STRING          = 1.0  
+  ENTRY_POINT             = ShellCEntryLib  
+
+[Sources]  
+  Debug.c
+  Memory.c
+  Io.c
+  MmIo.c
+  Pci.c
+  IndexIo.c
+  VarList.c
+  BootDevList.c
+  HandleList.c
+  PciList.c
+  SmBiosList.c
+  HdList.c
+  KbcTest.c
+  Cpu.c
+  Msr.c
+  Acpi.c
+  Usb.c
+  Spd.c
+
+[Packages]  
+  MdePkg/MdePkg.dec  
+  MdeModulePkg/MdeModulePkg.dec
+  ShellPkg/ShellPkg.dec
+  StdLib/StdLib.dec
+[LibraryClasses]  
+  UefiLib
+  ShellCEntryLib
+  UefiBootServicesTableLib
+  ShellLib
+  IoLib
+  UefiShellDebug1CommandsLib
+  LibStdio
+[Protocols]  
+  gEfiPciRootBridgeIoProtocolGuid
+  gEfiCpuIo2ProtocolGuid
+  gEfiDevicePathToTextProtocolGuid
+  gEfiDiskInfoProtocolGuid
+  gEfiUsb2HcProtocolGuid
+  gEfiUsbIoProtocolGuid
+[Ppis]  
+  
+[Guids]  
+  gEfiSmbiosTableGuid
+  gEfiAcpi20TableGuid
+  gEfiAcpi10TableGuid
+[BuildOptions]
+  #edk2-udk2015\MyPkg\Debug\Debug.c(65) : warning C4305: “类型转换”: 从“UINT64”到“EFI_HANDLE”截断  
+  MSFT:*_*_IA32_CC_FLAGS         = /W0
+  
+[Pcd]  
+  
+  
+[PcdEx]  
+  
+  
+[FixedPcd]  
+  
+ 
+[FeaturePcd]  
+  
+[PatchPcd] 

@@ -364,14 +364,14 @@ ShellAppMain_my (
   BOOLEAN                         Complete;
   CHAR16                          *InputStr;
 
-	CHAR16                          ArgvA[100];
-	UINT8                           IndexA;
-	CHAR16                          ArgvB[100];
-	UINT8                           IndexB;
-	CHAR16                          ArgvC[100];
-	UINT8                           IndexC;
-	CHAR16                          ArgvD[100];
-	UINT8                           IndexD;
+  CHAR16                          ArgvA[100];
+  UINT8                           IndexA;
+  CHAR16                          ArgvB[100];
+  UINT8                           IndexB;
+  CHAR16                          ArgvC[100];
+  UINT8                           IndexC;
+  CHAR16                          ArgvD[100];
+  UINT8                           IndexD;
 
   InputStr      = NULL;
   Complete      = FALSE;

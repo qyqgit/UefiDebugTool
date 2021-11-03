@@ -91,7 +91,7 @@
   
   TimerLib|MdePkg/Library/BaseTimerLibNullTemplate/BaseTimerLibNullTemplate.inf
   
-  MyLib|MyPkg/MyLibrary/MyLibrary.inf
+  #MyLib|MyPkg/MyLibrary/MyLibrary.inf
   
   PeimEntryPoint|MdePkg/Library/PeimEntryPoint/PeimEntryPoint.inf
   

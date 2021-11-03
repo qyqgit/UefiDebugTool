@@ -3,96 +3,96 @@
 a little tool used to check your uefi system.  
 一个简单的小工具用来访问uefi系统的各种资源。刚接触这方面的东西，希望有疏漏错误的地方多多交流指正，谢谢。  
 
-1.Mem(memory)  
-  (1)Mem  
+1.mem(memory)  
+  (1)mem  
 
-  (2)Mem r(read) hex(address)  
+  (2)mem r(read) hex(address)  
 
-  (3)Mem r(read) hex(address) hex(count)  
+  (3)mem r(read) hex(address) hex(count)  
 
-  (4)Mem w(write) hex(address) hex(value)  
+  (4)mem w(write) hex(address) hex(value)  
 
-2.Mmio  
-  (1)Mmio  
+2.mmio  
+  (1)mmio  
     1)-mmio   
-  (2)Mmio r hex(address)  
+  (2)mmio r hex(address)  
     1)-mmio r 0  
-  (3)Mmio r hex(address) hex(count)  
+  (3)mmio r hex(address) hex(count)  
     1)-mmio r ffff 20  
-  (4)Mmio w hex(address) hex(value)  
+  (4)mmio w hex(address) hex(value)  
     1)-mmio w 0 ff  
-3.Io  
-  (1)Io  
+3.io  
+  (1)io  
     1)-io   
-  (2)Io r hex(address)  
+  (2)io r hex(address)  
     1)-mmio r 0  
-  (3)Io r hex(address) hex(count)  
+  (3)io r hex(address) hex(count)  
     1)-mmio r ffff 20  
-  (4)Io w hex(address) hex(value)  
+  (4)io w hex(address) hex(value)  
     1)-mmio w 80 aa  
-4.Pci  
-  (1)Pci  
+4.pci  
+  (1)pci  
 
-  (2)Pci r bbddffrr(bus,device,function,register) hex(count)  
+  (2)pci r bbddffrr(bus,device,function,register) hex(count)  
   BusNum = 00;  
   DeviceNum = 03;  
   FunctionNum = 00;  
   RegisterIndex = 00;  
 
-  (3)Pci w bbddffrr(bus,device,function,register) hex(value)  
+  (3)pci w bbddffrr(bus,device,function,register) hex(value)  
   BusNum = 00;  
   DeviceNum = 03;  
   FunctionNum = 00;  
   RegisterOffset = C0;  
   Value = FF;  
 
-5.Isa  
-  (1)Isa r iiiiddddrrrr(index port,data port, register offset)  
+5.isa  
+  (1)isa r iiiiddddrrrr(index port,data port, register offset)  
   IndexPort = 0070;  
   DataPort = 0071;  
   RegisterOffset = 0000;  
 
-  (2)Isa w iiiiddddrrrr(index port,data port,register offset) hex(value)  
+  (2)isa w iiiiddddrrrr(index port,data port,register offset) hex(value)  
   IndexPort = 0070;  
   DataPort = 0071;  
   RegisterOffset = 0050;  
   Value = AA;  
 
-6.Msr  
-  (1)Msr r hex(address)  
+6.msr  
+  (1)msr r hex(address)  
 
-  (2)Msr w hex(address) hex(value)  
-7.Smbo  
-  (1)Smbo h(handle) hex(handle number)  
+  (2)msr w hex(address) hex(value)  
+7.smbo  
+  (1)smbo h(handle) hex(handle number)  
 
-  (2)Smbo t(type) hex(type number) hex(instance number)   
+  (2)smbo t(type) hex(type number) hex(instance number)   
 
-8.Kbc  
-9.Usb  
-10.Cpuid  
-  (1)Cpuid r hex(address)  
+8.kbc  
+9.usb  
+10.cpuid  
+  (1)cpuid r hex(address)  
 
-11.Acpi  
-  (1)Acpi rsdp  
+11.acpi  
+  (1)acpi rsdp  
 
-  (2)Acpi rsdt  
+  (2)acpi rsdt  
 
-  (3)Acpi xsdt  
+  (3)acpi xsdt  
 
-12.Spd  
-13.Ls  
-  (1)Ls var  
+12.spd  
+13.ls  
+  (1)ls var  
 
-  (2)Ls bootdev  
+  (2)ls bootdev  
 
-  (3)Ls pci  
+  (3)ls pci  
 
-  (4)Ls handle  
-    1)Ls handle  
-    2)Ls handle guid(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)  
+  (4)ls handle  
+    1)ls handle  
+    2)ls handle guid(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)  
 
-  (5)Ls devpath  
-    1)Ls devpath handle(xxxxxxxx)  
+  (5)ls devpath  
+    1)ls devpath handle(xxxxxxxx)  
 
-  (6)Ls disk  
+  (6)ls disk  
 

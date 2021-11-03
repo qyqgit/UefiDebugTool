@@ -96,3 +96,13 @@ a little tool used to check your uefi system.
 
   (6)ls disk  
 
+build
+编译
+1.VS2012_WDX_ENU.iso
+2.nasm-2.15.05-installer-x64.exe
+3.edk2-UDK2015.zip
+  (1)GIT: f0c97b7716ce92f1fc657f87f29bcc9170e5eb1f https://github.com/tianocore/edk2-BaseTools-win32.git
+4.set NASM_PREFIX=C:\Program Files\NASM\
+5.Edk2Setup.bat --nt32 x64
+6.在ShellPkg.dec里的[Includes]中添加"Library"
+7.build -t VS2012x86 -a X64 -p MyPkg\MyPkg.dsc

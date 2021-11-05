@@ -1,7 +1,7 @@
 /*
  * Acpi.c
  *
- *  Created on: 2017Äê9ÔÂ29ÈÕ
+ *  Created on: 2017Ã„Ãª9Ã”Ã‚29ÃˆÃ•
  *      Author: red
  */
 
@@ -11,7 +11,18 @@
 #include <Protocol/AcpiTable.h>
 #include "UefiShellDebug1CommandsLib/UefiShellDebug1CommandsLib.h"
 #include <stdio.h>
+#include <string.h>
 #include "Debug.h"
+
+VOID PrintEx(VOID* Data, UINT32 Length){
+  CHAR16                                    Buffer16[128];
+  CHAR8                                     Buffer[128];
+  memset(Buffer, 0, sizeof(Buffer));
+  memset(Buffer16, 0, sizeof(Buffer16));
+  strncpy(Buffer, (CHAR8*)Data, Length);
+  AsciiStrToUnicodeStr(Buffer, Buffer16);
+  Print(L"%s\r\n", Buffer16);
+}
 
 VOID
 AcpiShow (
@@ -61,26 +72,10 @@ AcpiShow (
 pRSDP:  Print (L"-----------------------------------------------------\r\n");
   Print(L"RSDP Address    :%08x\r\n", AcpiTable);
   Print(L"Signature       :");
-  putchar(RsdpPtr->Signature & 0x000000FF);
-  putchar((RsdpPtr->Signature & 0x0000FF00) / 16 /16);
-  putchar((RsdpPtr->Signature & 0x00FF0000) / 16 /16 / 16 /16);
-  putchar((RsdpPtr->Signature & 0xFF000000) / 16 /16 / 16 /16 / 16 /16);
-
-  putchar((RsdpPtr->Signature & 0x000000FF00000000) / 16 /16 / 16 /16 / 16 /16 / 16 /16);
-  putchar((RsdpPtr->Signature & 0x0000FF0000000000) / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16);
-  putchar((RsdpPtr->Signature & 0x00FF000000000000) / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16);
-  putchar((RsdpPtr->Signature & 0xFF0000FF00000000) / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16);
-  putchar('\n');
-
+  PrintEx(&RsdpPtr->Signature, sizeof(RsdpPtr->Signature));
   Print(L"Checksum        :%x\r\n",RsdpPtr->Checksum);
   Print(L"OemId           :");
-  putchar(RsdpPtr->OemId[0]);
-  putchar(RsdpPtr->OemId[1]);
-  putchar(RsdpPtr->OemId[2]);
-  putchar(RsdpPtr->OemId[3]);
-  putchar(RsdpPtr->OemId[4]);
-  putchar(RsdpPtr->OemId[5]);
-  putchar('\n');
+  PrintEx(&RsdpPtr->OemId[0], sizeof(RsdpPtr->OemId));
   Print(L"Revision        :%x\r\n",RsdpPtr->Revision);
   Print(L"RsdtAddress     :%x\r\n",RsdpPtr->RsdtAddress);
   Print(L"Length          :%x\r\n",RsdpPtr->Length);
@@ -96,43 +91,19 @@ pRSDT:  Print (L"-----------------------------------------------------\r\n");
   AcpiHeader = (EFI_ACPI_DESCRIPTION_HEADER*) RsdpPtr->RsdtAddress;
   Print(L"RSDT Address    :%08x\r\n", RsdpPtr->RsdtAddress);
   Print(L"Signature       :");
-  putchar(AcpiHeader->Signature & 0x000000FF);
-  putchar((AcpiHeader->Signature & 0x0000FF00) / 16 /16);
-  putchar((AcpiHeader->Signature & 0x00FF0000) / 16 /16 / 16 /16);
-  putchar((AcpiHeader->Signature & 0xFF000000) / 16 /16 / 16 /16 / 16 /16);
-  putchar('\n');
+  PrintEx(&AcpiHeader->Signature, sizeof(AcpiHeader->Signature));
 
   Print(L"Length          :%x\r\n", AcpiHeader->Length);
   Print(L"Revision        :%x\r\n",AcpiHeader->Revision);
   Print(L"CheckSum        :%x\r\n",AcpiHeader->Checksum);
   Print(L"OemId           :");
-  putchar(AcpiHeader->OemId[0]);
-  putchar(AcpiHeader->OemId[1]);
-  putchar(AcpiHeader->OemId[2]);
-  putchar(AcpiHeader->OemId[3]);
-  putchar(AcpiHeader->OemId[4]);
-  putchar(AcpiHeader->OemId[5]);
-  putchar('\n');
-
+  PrintEx(&AcpiHeader->OemId[0], sizeof(AcpiHeader->OemId));
   Print(L"OemTableId      :");
-  putchar(AcpiHeader->OemTableId & 0x000000FF);
-  putchar((AcpiHeader->OemTableId & 0x0000FF00) / 16 /16);
-  putchar((AcpiHeader->OemTableId & 0x00FF0000) / 16 /16 / 16 /16);
-  putchar((AcpiHeader->OemTableId & 0xFF000000) / 16 /16 / 16 /16 / 16 /16);
-
-  putchar((AcpiHeader->OemTableId & 0x000000FF00000000) / 16 /16 / 16 /16 / 16 /16 / 16 /16);
-  putchar((AcpiHeader->OemTableId & 0x0000FF0000000000) / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16);
-  putchar((AcpiHeader->OemTableId & 0x00FF000000000000) / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16);
-  putchar((AcpiHeader->OemTableId & 0xFF0000FF00000000) / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16);
-  putchar('\n');
+  PrintEx(&AcpiHeader->OemTableId, sizeof(AcpiHeader->OemTableId));
 
   Print(L"OemRevision     :%x\r\n", AcpiHeader->OemRevision);
   Print(L"CreatorId       :");
-  putchar(AcpiHeader->CreatorId & 0x000000FF);
-  putchar((AcpiHeader->CreatorId & 0x0000FF00) / 16 /16);
-  putchar((AcpiHeader->CreatorId & 0x00FF0000) / 16 /16 / 16 /16);
-  putchar((AcpiHeader->CreatorId & 0xFF000000) / 16 /16 / 16 /16 / 16 /16);
-  putchar('\n');
+  PrintEx(&AcpiHeader->CreatorId, sizeof(AcpiHeader->CreatorId));
 
   Print(L"CreatorRevision :%x\r\n",AcpiHeader->CreatorRevision);
   for(EntryIndex = 0; EntryIndex < (AcpiHeader->Length - 36) / 4; EntryIndex++) {
@@ -147,44 +118,19 @@ pXSDT:  Print (L"-----------------------------------------------------\r\n");
   AcpiHeader = (EFI_ACPI_DESCRIPTION_HEADER*) RsdpPtr->XsdtAddress;
   Print(L"XSDT Address    :%08x\r\n", RsdpPtr->RsdtAddress);
   Print(L"Signature       :");
-  putchar(AcpiHeader->Signature & 0x000000FF);
-  putchar((AcpiHeader->Signature & 0x0000FF00) / 16 /16);
-  putchar((AcpiHeader->Signature & 0x00FF0000) / 16 /16 / 16 /16);
-  putchar((AcpiHeader->Signature & 0xFF000000) / 16 /16 / 16 /16 / 16 /16);
-  putchar('\n');
+  PrintEx(&AcpiHeader->Signature, sizeof(AcpiHeader->Signature));
 
   Print(L"Length          :%x\r\n", AcpiHeader->Length);
   Print(L"Revision        :%x\r\n",AcpiHeader->Revision);
   Print(L"CheckSum        :%x\r\n",AcpiHeader->Checksum);
   Print(L"OemId           :");
-  putchar(AcpiHeader->OemId[0]);
-  putchar(AcpiHeader->OemId[1]);
-  putchar(AcpiHeader->OemId[2]);
-  putchar(AcpiHeader->OemId[3]);
-  putchar(AcpiHeader->OemId[4]);
-  putchar(AcpiHeader->OemId[5]);
-  putchar('\n');
+  PrintEx(&AcpiHeader->OemId[0], sizeof(AcpiHeader->OemId));
 
   Print(L"OemTableId      :");
-  putchar(AcpiHeader->OemTableId & 0x000000FF);
-  putchar((AcpiHeader->OemTableId & 0x0000FF00) / 16 /16);
-  putchar((AcpiHeader->OemTableId & 0x00FF0000) / 16 /16 / 16 /16);
-  putchar((AcpiHeader->OemTableId & 0xFF000000) / 16 /16 / 16 /16 / 16 /16);
-
-  putchar((AcpiHeader->OemTableId & 0x000000FF00000000) / 16 /16 / 16 /16 / 16 /16 / 16 /16);
-  putchar((AcpiHeader->OemTableId & 0x0000FF0000000000) / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16);
-  putchar((AcpiHeader->OemTableId & 0x00FF000000000000) / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16);
-  putchar((AcpiHeader->OemTableId & 0xFF0000FF00000000) / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16 / 16 /16);
-  putchar('\n');
-
+  PrintEx(&AcpiHeader->OemTableId, sizeof(AcpiHeader->OemTableId));
   Print(L"OemRevision     :%x\r\n", AcpiHeader->OemRevision);
   Print(L"CreatorId       :");
-  putchar(AcpiHeader->CreatorId & 0x000000FF);
-  putchar((AcpiHeader->CreatorId & 0x0000FF00) / 16 /16);
-  putchar((AcpiHeader->CreatorId & 0x00FF0000) / 16 /16 / 16 /16);
-  putchar((AcpiHeader->CreatorId & 0xFF000000) / 16 /16 / 16 /16 / 16 /16);
-  putchar('\n');
-
+  PrintEx(&AcpiHeader->CreatorId, sizeof(AcpiHeader->CreatorId));
   Print(L"CreatorRevision :%x\r\n",AcpiHeader->CreatorRevision);
   for(EntryIndex = 0; EntryIndex < (AcpiHeader->Length - 36) / 8; EntryIndex++) {
     Print(L"Entry[%02x]:%016lx\r\n", EntryIndex, *((UINTN*)(EntryIndex * 8 + (UINTN)AcpiHeader + 36)));

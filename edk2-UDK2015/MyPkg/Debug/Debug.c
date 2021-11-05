@@ -45,6 +45,10 @@ typedef enum {
   MmSpd
 } SHELL_MM_ACCESS_TYPE;
 
+typedef struct ACTION{
+	CHAR16 Option[128];
+	UINT16 AccessTypeAddressType;
+}ACTION_t;
 
 VOID MmHandleDevPath (
   UINT64  Value
@@ -159,45 +163,49 @@ DealWithInputStr (
   UINT64                Address;
   UINT64                Value;
   EFI_GUID              GuidData;
+  UINT32                i;
 
+  ACTION_t action_tb_access[] = {
+    {L"mem", MmMemory},
+    {L"mmio", MmMemoryMappedIo},
+    {L"io", MmIo},
+    {L"pci", MmPci},
+    {L"isa", MmIsa},
+    {L"msr", MmMsr},
+    {L"smbo", MmSmBios},
+    {L"kbc", MmKbcTest},
+    {L"usb", MmUsb},
+    {L"cpuid", MmCpuid},
+    {L"acpi", MmAcpi},
+    {L"spd", MmSpd},
+    {L"ls", MmList}
+  };
+  ACTION_t action_tb_address[] = {
+    {L"rsdp", RSDP},
+    {L"rsdt", RSDT},
+    {L"xsdt", XSDT},
+    {L"var", VAR},
+    {L"bootdev", BOOTDEV},
+    {L"pci", PCI},
+    {L"handle", HANDLE},
+    {L"devpath", DEVPATH},
+    {L"disk", DISK}
+  };
   
-  AccessType        = MmPciExpress;
+  AccessType        = -1;
   Read              = TRUE;
   Address           = 0;
   Value             = 0;
   gpGuidData        = NULL;
+  i                 = 0;
   
-  if (!StrCmp (L"mem", ArgvA))
-    AccessType = MmMemory;
-  else if (!StrCmp (L"mmio", ArgvA))
-    AccessType = MmMemoryMappedIo;
-  else if (!StrCmp (L"io", ArgvA))
-    AccessType = MmIo;
-  else if (!StrCmp (L"pci", ArgvA))
-    AccessType = MmPci;
-  else if (!StrCmp (L"isa", ArgvA))
-    AccessType = MmIsa;
-  else if (!StrCmp (L"msr", ArgvA))
-    AccessType = MmMsr;
-  else if (!StrCmp (L"smbo", ArgvA))
-    AccessType = MmSmBios;
-  else if (!StrCmp (L"kbc", ArgvA))
-    AccessType = MmKbcTest;
-  else if (!StrCmp (L"usb", ArgvA))
-    AccessType = MmUsb;
-  else if (!StrCmp (L"cpuid", ArgvA))
-    AccessType = MmCpuid;
-  else if (!StrCmp (L"acpi", ArgvA))
-    AccessType = MmAcpi;
-  else if (!StrCmp (L"spd", ArgvA))
-    AccessType = MmSpd;
-  else if (!StrCmp (L"ls", ArgvA))
-    AccessType = MmList;
-  else {
-    if (StrCmp (L"", ArgvA) != 0) {
-      Print(L"error.please input mem/mmio/io/pci/isa/smbo/kbc/spd/usb/cpuid/msr/acpi/ls .\r\n");
-      return;
-    }
+  for(i = 0; i < (sizeof(action_tb_access) / sizeof(ACTION_t)); i++){
+	  if(!StrCmp(action_tb_access[i].Option, ArgvA))
+		  AccessType = action_tb_access[i].AccessTypeAddressType;
+  }
+  if (AccessType == -1) {
+    Print(L"error.please input mem/mmio/io/pci/isa/smbo/kbc/spd/usb/cpuid/msr/acpi/ls .\r\n");
+    return;
   }
 //specific access type input check
   if (AccessType == MmKbcTest) {//kbc
@@ -255,7 +263,10 @@ DealWithInputStr (
       ArgvD[0] = '\0';
     }
   }
-
+  for(i = 0; i < (sizeof(action_tb_address) / sizeof(ACTION_t)); i++){
+	  if(!StrCmp(action_tb_address[i].Option, ArgvB))
+		  Address = action_tb_address[i].AccessTypeAddressType;
+  }
   if (!StrCmp (L"r", ArgvB))//read
     Read = TRUE;
   else if (!StrCmp (L"w", ArgvB))//write
@@ -264,26 +275,8 @@ DealWithInputStr (
     Read = TRUE;
   else if (!StrCmp (L"t", ArgvB))//type
     Read = FALSE;
-  else if (!StrCmp (L"rsdp", ArgvB))
-    Address = RSDP;
-  else if (!StrCmp (L"rsdt", ArgvB))
-    Address = RSDT;
-  else if (!StrCmp (L"xsdt", ArgvB))
-    Address = XSDT;
-  else if (!StrCmp (L"var", ArgvB))
-    Address = VAR;
-  else if (!StrCmp (L"bootdev", ArgvB))
-    Address = BOOTDEV;
-  else if (!StrCmp (L"pci", ArgvB))
-    Address = PCI;
-  else if (!StrCmp (L"handle", ArgvB))
-    Address = HANDLE;
-  else if (!StrCmp (L"devpath", ArgvB))
-    Address = DEVPATH;
-  else if (!StrCmp (L"disk", ArgvB))
-    Address = DISK;
   else {
-    if (StrCmp (L"", ArgvB) != 0) {
+    if ((StrCmp (L"", ArgvB) != 0) && (Address == 0)) {
       Print(L"please input r/w/h/t/rsdp/rsdt/xsdt/var/bootdev/pci/handle/devpath/disk .\r\n");
       return;
     }

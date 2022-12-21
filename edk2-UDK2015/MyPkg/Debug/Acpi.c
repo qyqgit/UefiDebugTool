@@ -14,9 +14,11 @@
 #include <string.h>
 #include "Debug.h"
 
-VOID PrintEx(VOID* Data, UINT32 Length){
+VOID PrintlnEx(VOID* Data, UINT32 Length){
   CHAR16                                    Buffer16[128];
   CHAR8                                     Buffer[128];
+  if(Length >= 128)
+    return;
   memset(Buffer, 0, sizeof(Buffer));
   memset(Buffer16, 0, sizeof(Buffer16));
   strncpy(Buffer, (CHAR8*)Data, Length);
@@ -72,10 +74,10 @@ AcpiShow (
 pRSDP:  Print (L"-----------------------------------------------------\r\n");
   Print(L"RSDP Address    :%08x\r\n", AcpiTable);
   Print(L"Signature       :");
-  PrintEx(&RsdpPtr->Signature, sizeof(RsdpPtr->Signature));
+  PrintlnEx(&RsdpPtr->Signature, sizeof(RsdpPtr->Signature));
   Print(L"Checksum        :%x\r\n",RsdpPtr->Checksum);
   Print(L"OemId           :");
-  PrintEx(&RsdpPtr->OemId[0], sizeof(RsdpPtr->OemId));
+  PrintlnEx(&RsdpPtr->OemId[0], sizeof(RsdpPtr->OemId));
   Print(L"Revision        :%x\r\n",RsdpPtr->Revision);
   Print(L"RsdtAddress     :%x\r\n",RsdpPtr->RsdtAddress);
   Print(L"Length          :%x\r\n",RsdpPtr->Length);
@@ -91,19 +93,19 @@ pRSDT:  Print (L"-----------------------------------------------------\r\n");
   AcpiHeader = (EFI_ACPI_DESCRIPTION_HEADER*) RsdpPtr->RsdtAddress;
   Print(L"RSDT Address    :%08x\r\n", RsdpPtr->RsdtAddress);
   Print(L"Signature       :");
-  PrintEx(&AcpiHeader->Signature, sizeof(AcpiHeader->Signature));
+  PrintlnEx(&AcpiHeader->Signature, sizeof(AcpiHeader->Signature));
 
   Print(L"Length          :%x\r\n", AcpiHeader->Length);
   Print(L"Revision        :%x\r\n",AcpiHeader->Revision);
   Print(L"CheckSum        :%x\r\n",AcpiHeader->Checksum);
   Print(L"OemId           :");
-  PrintEx(&AcpiHeader->OemId[0], sizeof(AcpiHeader->OemId));
+  PrintlnEx(&AcpiHeader->OemId[0], sizeof(AcpiHeader->OemId));
   Print(L"OemTableId      :");
-  PrintEx(&AcpiHeader->OemTableId, sizeof(AcpiHeader->OemTableId));
+  PrintlnEx(&AcpiHeader->OemTableId, sizeof(AcpiHeader->OemTableId));
 
   Print(L"OemRevision     :%x\r\n", AcpiHeader->OemRevision);
   Print(L"CreatorId       :");
-  PrintEx(&AcpiHeader->CreatorId, sizeof(AcpiHeader->CreatorId));
+  PrintlnEx(&AcpiHeader->CreatorId, sizeof(AcpiHeader->CreatorId));
 
   Print(L"CreatorRevision :%x\r\n",AcpiHeader->CreatorRevision);
   for(EntryIndex = 0; EntryIndex < (AcpiHeader->Length - 36) / 4; EntryIndex++) {
@@ -118,19 +120,19 @@ pXSDT:  Print (L"-----------------------------------------------------\r\n");
   AcpiHeader = (EFI_ACPI_DESCRIPTION_HEADER*) RsdpPtr->XsdtAddress;
   Print(L"XSDT Address    :%08x\r\n", RsdpPtr->RsdtAddress);
   Print(L"Signature       :");
-  PrintEx(&AcpiHeader->Signature, sizeof(AcpiHeader->Signature));
+  PrintlnEx(&AcpiHeader->Signature, sizeof(AcpiHeader->Signature));
 
   Print(L"Length          :%x\r\n", AcpiHeader->Length);
   Print(L"Revision        :%x\r\n",AcpiHeader->Revision);
   Print(L"CheckSum        :%x\r\n",AcpiHeader->Checksum);
   Print(L"OemId           :");
-  PrintEx(&AcpiHeader->OemId[0], sizeof(AcpiHeader->OemId));
+  PrintlnEx(&AcpiHeader->OemId[0], sizeof(AcpiHeader->OemId));
 
   Print(L"OemTableId      :");
-  PrintEx(&AcpiHeader->OemTableId, sizeof(AcpiHeader->OemTableId));
+  PrintlnEx(&AcpiHeader->OemTableId, sizeof(AcpiHeader->OemTableId));
   Print(L"OemRevision     :%x\r\n", AcpiHeader->OemRevision);
   Print(L"CreatorId       :");
-  PrintEx(&AcpiHeader->CreatorId, sizeof(AcpiHeader->CreatorId));
+  PrintlnEx(&AcpiHeader->CreatorId, sizeof(AcpiHeader->CreatorId));
   Print(L"CreatorRevision :%x\r\n",AcpiHeader->CreatorRevision);
   for(EntryIndex = 0; EntryIndex < (AcpiHeader->Length - 36) / 8; EntryIndex++) {
     Print(L"Entry[%02x]:%016lx\r\n", EntryIndex, *((UINTN*)(EntryIndex * 8 + (UINTN)AcpiHeader + 36)));
